@@ -124,4 +124,7 @@ public class ShelterService {
                 .sorted(Comparator.comparing(TsunamiShelter::getDistanceFromUser))
                 .collect(Collectors.toList());
     }
+
+
+
 }

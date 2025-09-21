@@ -3,10 +3,119 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Web Project</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지진해일 긴급대피소 찾기</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- 카카오맵 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07bc267c49d48c9fcf36495e60bc1d2e&libraries=services"></script>
 </head>
 <body>
-<h1 th:text="${message}">Hello World</h1>
+<div class="container">
+    <!-- 헤더 -->
+    <header class="header">
+        <h1>🏠 지진해일 긴급대피소 찾기</h1>
+        <p class="subtitle">현재 위치에서 가장 가까운 대피소를 찾아드립니다</p>
+    </header>
+
+    <!-- 상태 표시 -->
+    <div class="status-bar">
+        <div class="data-info">
+                <span th:if="${shelterCount > 0}">
+                    📊 등록된 대피소: <strong th:text="${shelterCount}">0</strong>개
+                </span>
+            <span th:if="${shelterCount == 0}">
+                    ⚠️ 데이터를 먼저 로드해주세요
+                </span>
+        </div>
+        <div class="admin-controls" th:if="${shelterCount == 0}">
+            <button id="initDataBtn" class="btn btn-admin">데이터 로드</button>
+        </div>
+    </div>
+
+    <!-- 위치 및 검색 컨트롤 -->
+    <div class="search-section">
+        <div class="location-controls">
+            <button id="getCurrentLocationBtn" class="btn btn-primary">
+                📍 내 위치 찾기
+            </button>
+            <span id="locationStatus" class="location-status"></span>
+        </div>
+
+        <div class="search-controls">
+            <div class="search-input-group">
+                <select id="searchType">
+                    <option value="address">주소</option>
+                    <option value="name">대피소명</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+                <button id="searchBtn" class="btn btn-secondary">🔍 검색</button>
+            </div>
+        </div>
+
+        <div class="filter-controls">
+            <label for="radiusSelect">검색 반경:</label>
+            <select id="radiusSelect">
+                <option value="1">1km</option>
+                <option value="3">3km</option>
+                <option value="5" selected>5km</option>
+                <option value="10">10km</option>
+                <option value="20">20km</option>
+            </select>
+
+            <label for="limitSelect">표시 개수:</label>
+            <select id="limitSelect">
+                <option value="5">5개</option>
+                <option value="10" selected>10개</option>
+                <option value="20">20개</option>
+                <option value="50">50개</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 지도 및 결과 -->
+    <div class="main-content">
+        <!-- 지도 -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-controls">
+                <button id="toggleMapType" class="btn btn-small">지도 타입 변경</button>
+            </div>
+        </div>
+
+        <!-- 결과 목록 -->
+        <div class="results-container">
+            <div class="results-header">
+                <h3>🏃‍♂️ 가까운 대피소</h3>
+                <div id="resultsCount" class="results-count"></div>
+            </div>
+            <div id="shelterList" class="shelter-list">
+                <div class="no-results">
+                    위치를 설정하고 검색해주세요
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 로딩 스피너 -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>데이터를 불러오는 중...</p>
+    </div>
+</div>
+
+<!-- 대피소 상세 정보 모달 -->
+<div id="shelterModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">대피소 상세 정보</h3>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/app.js"></script>
 </body>
 </html>
