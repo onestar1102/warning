@@ -10,51 +10,37 @@ class ShelterApp {
         this.init();
     }
 
-    init() {
-        // DOM이 완전히 로드된 후 초기화
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                this.setupAfterLoad();
-            });
-        } else {
-            this.setupAfterLoad();
-        }
-    }
 
-    setupAfterLoad() {
+    init() {
+        // 카카오맵 API가 이미 로드된 상태에서 호출되므로 바로 초기화
         this.initializeMap();
         this.bindEvents();
         this.checkGeolocationSupport();
     }
 
+
+    // 카카오맵 초기화
     // 카카오맵 초기화
     initializeMap() {
+        console.log('지도 초기화 시작');
+
         const container = document.getElementById('map');
         if (!container) {
             console.error('지도 컨테이너를 찾을 수 없습니다.');
-            return;
-        }
-
-        // 카카오맵 API가 로드되었는지 확인
-        if (typeof kakao === 'undefined') {
-            console.error('카카오맵 API가 로드되지 않았습니다.');
-            this.showAlert('지도를 로드할 수 없습니다. 카카오맵 API 키를 확인해주세요.', 'error');
-            return;
-        }
-
-        if (!kakao.maps) {
-            console.error('카카오맵 maps 객체가 없습니다.');
-            this.showAlert('지도를 초기화할 수 없습니다.', 'error');
+            this.showAlert('지도 컨테이너를 찾을 수 없습니다.', 'error');
             return;
         }
 
         try {
+            console.log('카카오맵 객체 생성 중...');
+
             const options = {
                 center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울시청
                 level: 3
             };
 
             this.map = new kakao.maps.Map(container, options);
+            console.log('카카오맵 생성 완료');
 
             // 지도 타입 컨트롤러 추가
             const mapTypeControl = new kakao.maps.MapTypeControl();
@@ -64,7 +50,7 @@ class ShelterApp {
             const zoomControl = new kakao.maps.ZoomControl();
             this.map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-            console.log('카카오맵 초기화 완료');
+            console.log('✅ 카카오맵 초기화 완료');
         } catch (error) {
             console.error('지도 초기화 중 오류:', error);
             this.showAlert('지도 초기화에 실패했습니다: ' + error.message, 'error');

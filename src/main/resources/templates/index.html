@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="/style.css">
     <!-- 카카오맵 API -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07bc267c49d48c9fcf36495e60bc1d2e&libraries=services"></script>
+    <script>
+        // 카카오맵 API 완전 로드 후 앱 시작
+        kakao.maps.load(function() {
+            console.log('카카오맵 API 로드 완료');
+            window.app = new ShelterApp();
+        });
+    </script>
 </head>
 <body>
 <div class="container">
