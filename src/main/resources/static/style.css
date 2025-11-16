@@ -462,3 +462,18 @@ body {
     color: #856404;
     border: 1px solid #ffeaa7;
 }
+/* 카카오맵 인포윈도우 내부 버튼 스타일 */
+.btn-infowindow {
+    padding: 4px 8px;
+    font-size: 11px;
+    border: none;
+    border-radius: 4px;
+    background: #3498db;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-infowindow:hover {
+    background: #2980b9;
+}

@@ -6,8 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>지진해일 긴급대피소 찾기</title>
     <link rel="stylesheet" href="/style.css">
+
+    <!-- ✅ 먼저 app.js 로드해서 ShelterApp 클래스를 전역에 등록 -->
+    <script src="/js/app.js"></script>
+
     <!-- 카카오맵 API -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07bc267c49d48c9fcf36495e60bc1d2e&libraries=services"></script>
+    <script>
+        // 카카오맵 API 로드가 완료되면 호출되는 콜백
+        kakao.maps.load(function () {
+
+            // DOM이 완전히 준비된 뒤에 ShelterApp 생성
+            function startApp() {
+                console.log('카카오맵 API 로드 완료');
+                window.app = new ShelterApp();
+            }
+
+            // 이미 DOM 파싱이 끝났으면 바로 실행
+            if (document.readyState === 'loading') {
+                // 아직 파싱 중이면 DOMContentLoaded 이후에 실행
+                document.addEventListener('DOMContentLoaded', startApp);
+            } else {
+                startApp();
+            }
+        });
+    </script>
+
     <script>
         // 카카오맵 API 완전 로드 후 앱 시작
         kakao.maps.load(function() {
@@ -15,6 +39,7 @@
             window.app = new ShelterApp();
         });
     </script>
+
 </head>
 <body>
 <div class="container">
@@ -123,6 +148,6 @@
     </div>
 </div>
 
-<script src="/js/app.js"></script>
+
 </body>
 </html>
