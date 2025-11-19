@@ -13,6 +13,7 @@ public class TsunamiShelter {
     @Column(name = "shelter_name")
     private String shelterName; // 대피소명
 
+
     @Column(name = "address")
     private String address; // 소재지주소
 
